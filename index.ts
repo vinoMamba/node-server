@@ -8,6 +8,11 @@ const server = http.createServer();
 
 server.on('request', (request: IncomingMessage, response: ServerResponse) => {
     const {method, url: baseUrl, headers} = request;
+    if (method !== 'GET') {
+        response.statusCode = 405;
+        response.end();
+        return;
+    }
     const url = new URL('http://localhost' + baseUrl);
     console.log(url);
     // response.setHeader('content-type', 'text/html; charset=utf-8');
