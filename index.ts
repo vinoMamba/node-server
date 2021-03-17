@@ -34,6 +34,8 @@ server.on('request', (request: IncomingMessage, response: ServerResponse) => {
                 response.end('服务异常');
             }
         } else {
+            //返回文件内容
+            response.setHeader('Cache-Control', 'public, max-age= 31536000');
             response.end(data);
         }
     });
