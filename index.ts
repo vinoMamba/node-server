@@ -9,30 +9,27 @@ const server = http.createServer();
 server.on('request', (request: IncomingMessage, response: ServerResponse) => {
     const { method, url: baseUrl, headers } = request;
     const url = new URL('http://localhost' + baseUrl)
+    console.log(url)
     const pathName = url.pathname
-    switch (pathName) {
-        case '/index.html':
-            response.setHeader('content-type', 'text/html; charset=utf-8');
-            fs.readFile(p.resolve(publicDir, 'index.html'), (error, data) => {
-                if (error) throw error;
-                response.end(data);
-            });
-            break;
-        case '/index.css':
-            response.setHeader('content-type', 'text/css; charset=utf-8');
-            fs.readFile(p.resolve(publicDir, 'index.css'), (error, data) => {
-                if (error) throw error;
-                response.end(data);
-            });
-            break;
-        case '/main.js':
-            response.setHeader('content-type', 'text/javascript; charset=utf-8');
-            fs.readFile(p.resolve(publicDir, 'main.js'), (error, data) => {
-                if (error) throw error;
-                response.end(data);
-            });
-            break;
-    }
+    const fileDir = url.pathname.substr(1)
+    // response.setHeader('content-type', 'text/html; charset=utf-8');
+    fs.readFile(p.resolve(publicDir, fileDir), (error, data) => {
+        if (error) {
+            console.log(error)
+            if (error.errno === -4058) {
+                response.statusCode = 404
+                fs.readFile(p.resolve(publicDir, 'notFoundPage.html'), (error, data) => {
+                    if (error) throw error
+                    response.end(data)
+                })
+            } else {
+                response.statusCode = 500
+                response.end('服务异常')
+            }
+        } else {
+            response.end(data);
+        }
+    });
 });
 
 server.listen(8888, () => {
