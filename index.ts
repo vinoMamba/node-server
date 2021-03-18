@@ -22,7 +22,7 @@ server.on('request', (request: IncomingMessage, response: ServerResponse) => {
         '.css': 'css',
         '.js': 'javascript'
     }
-    response.setHeader('content-type', `text/${fileType[fileSuffix]}; charset=utf-8`);
+    response.setHeader('content-type', `text/${fileType[fileSuffix] || 'html'}; charset=utf-8`);
     let fileDir = url.pathname.substr(1);
     if (fileDir === '') {
         fileDir = 'index.html';
