@@ -1,22 +1,30 @@
-const argv = require('minimist')(process.argv.slice(2));
-const param = {
+import { OptionValues } from 'commander';
+import { startServer } from './index';
+
+import { Command } from 'commander';
+const program = new Command();
+program.version('0.0.1');
+type Params = {
+    filePath: string,
+    cache: string,
+    port: string
+}
+const params: Params = {
     filePath: '',
-    cacahe: 365,
-    address: '127.0.0.1'
-}
-if (argv._.length === 0) {
-    showHelpMessage()
-} else {
-    param.filePath = argv._[0]
-}
-//帮助信息
-function showHelpMessage() {
-    console.log(
-        `options:
-  -p --port    Setting Port [8080]
-  -a --address Setting Address [0.0.0.0]
-  -c --cache   Setting Cache-Control [365]
-  -h --help    Get Help`
-    )
-}
-export default param
+    cache: '',
+    port: ''
+};
+program
+    .option('-p, --port<number>', 'Setting Port')
+    .option('-c, --cache<number>', 'Setting Cache-Control')
+    .arguments('<filePath>')
+    .action((filePath) => {
+        params.filePath = filePath;
+    });
+program.parse(process.argv);
+
+const options: OptionValues = program.opts();
+params.port = options['port<number>'];
+params.cache = options['cache<number>'];
+
+startServer(params);
