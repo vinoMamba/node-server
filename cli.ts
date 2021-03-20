@@ -1,14 +1,11 @@
-import { OptionValues } from 'commander';
-import { startServer } from './index';
+#!/usr/bin/env node
+import {OptionValues} from 'commander';
+import {startServer} from './index';
 
-import { Command } from 'commander';
+import {Command} from 'commander';
+
 const program = new Command();
 program.version('0.0.1');
-type Params = {
-    filePath: string,
-    cache: string,
-    port: string
-}
 const params: Params = {
     filePath: '',
     cache: '',

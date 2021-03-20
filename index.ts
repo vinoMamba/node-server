@@ -5,8 +5,8 @@ import * as p from 'path';
 
 const publicDir = p.resolve(__dirname, 'public');
 const server = http.createServer();
-export const startServer = (param) => {
-    const {filePath, cache = 365, port = 8888} = param;
+export const startServer = (param: Params) => {
+    const {filePath, cache = '365', port = '8888'} = param;
     const maxAge = 3600 * 24 * parseInt(cache);
     const path = p.resolve(__dirname, filePath);
     server.on('request', (request: IncomingMessage, response: ServerResponse) => {
@@ -18,7 +18,7 @@ export const startServer = (param) => {
         }
         const index = filePath.indexOf('.');
         const fileSuffix = filePath.substr(index);
-        const fileType = {
+        const fileType: FileType = {
             '.html': 'html',
             '.css': 'css',
             '.js': 'javascript'
