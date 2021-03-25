@@ -29,10 +29,7 @@ export const startServer = (param: Params) => {
                 console.log(error);
                 if (error.errno === -4058) {
                     response.statusCode = 404;
-                    fs.readFile(p.resolve(publicDir, 'notFoundPage.html'), (error, data) => {
-                        if (error) throw error;
-                        response.end(data);
-                    });
+                    response.end('你访问的页面不存在');
                 } else {
                     response.statusCode = 500;
                     response.end('服务异常');
